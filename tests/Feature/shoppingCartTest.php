@@ -59,24 +59,22 @@ class shoppingCartTest extends TestCase
 
 
         //add products
-        $response=$this->post('/cart/add',[
+        $response=$this->post('/a/cart/add',[
                     'name' => 'Java',
                     'price' => '100',
-                    'currency_iso_code' => 'ILS'
-            
+                    'currency_iso_code' => 'ILS',
         ]);
 
 
         
         $response->assertJsonFragment([
-            
+                'cart_id' => auth()->user()->cart()->first()->id,
                 'name' => 'Java',
                 'currency_iso_code' => "ILS",
-                'count' => 1,
-                'sum' => 100
+                'price' => 100
         ]);
     }
-    /* @test */
+    /** @test */
     public function add_multiple_products_to_shopping_cart()
     {
         // When:
@@ -89,28 +87,44 @@ class shoppingCartTest extends TestCase
         $this->withOutExceptionHandling();
         $user=factory('App\User')->create();
         $this->actingAs($user);
+        $response=$this->post('/cart',[]);
 
-        $ //add products
-        $response=$this->post('/cart/add',[
-            'products'=> [
-                [
-                    'name' => 'Java',
-                    'price' => '100',
-                    'currency_iso_code' => 'ILS'
-                ]
-            ],
+
+        //add products
+        $response=$this->post('/a/cart/add',[
+            'name' => 'Java',
+            'price' => '100',
+            'currency_iso_code' => 'ILS',
         ]);
-        
         $response->assertJsonFragment([
-            'products'=>[
-                [
-                    'name' => 'Java',
-                    'price' => '100',
-                    'currency_iso_code' => "ILS"
-                ]
-            ],
-            'total' => '100',
-            
-        ]);
+            'cart_id' => auth()->user()->cart()->first()->id,
+            'name' => 'Java',
+            'currency_iso_code' => "ILS",
+            'price' => 100
+    ]);
+    //add products
+    $response=$this->post('/a/cart/add',[
+        'name' => 'Java',
+        'price' => '100',
+        'currency_iso_code' => 'ILS',
+    ]);
+    $response->assertJsonFragment([
+        'cart_id' => auth()->user()->cart()->first()->id,
+        'name' => 'Java',
+        'currency_iso_code' => "ILS",
+        'price' => 100
+    ]);
+    //add products
+    $response=$this->post('/a/cart/add',[
+        'name' => 'Java',
+        'price' => '100',
+        'currency_iso_code' => 'ILS',
+    ]);
+    $response->assertJsonFragment([
+        'cart_id' => auth()->user()->cart()->first()->id,
+        'name' => 'Java',
+        'currency_iso_code' => "ILS",
+        'price' => 100
+    ]);
     }
 }

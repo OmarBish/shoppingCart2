@@ -9,7 +9,7 @@
                 <div class="card-header">add cart if not</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ url('/cart') }}">
+                    <form method="POST" action="{{ url('/a/cart') }}">
                         @csrf                        
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
@@ -33,7 +33,7 @@
 
                 <div class="card-body">
                     
-                <form method="POST" action="{{ url('/cart/add') }}">
+                <form method="POST" action="{{ url('/a/cart/add') }}">
                         @csrf                        
 
                         <div class="form-group row">

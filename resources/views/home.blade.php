@@ -33,7 +33,7 @@
 
                 <div class="card-body">
                     
-                <form method="POST" action="{{ url('/cart/add') }}">
+                <form method="POST" action="{{ url('/a/cart/add') }}">
                         @csrf                        
 
                         <div class="form-group row">

@@ -26,11 +26,12 @@ class HomeController extends Controller
     public function index()
     {
         $cart=auth()->user()->cart()->first();
-        $cart_id=$cart->id;
+        
 
         if($cart == Null){
             $cart =false;
         }else{
+            $cart_id=$cart->id;
             $cart=true;
         }
         

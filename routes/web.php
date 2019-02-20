@@ -57,11 +57,11 @@ Route::post('/cart/add', function () {
         'currency_iso_code' => 'required',
     ]);
     
-    $cart=App\cart::get()->where('id',auth()->id());
+    $cart=App\cart::get()->where('id',auth()->id())->first();
     
         
         App\product::create([
-            'cart_id'=>$cart[0]->id,
+            'cart_id'=>$cart->id,
             'name'=>$attr['name'],
             'price'=>$attr['price'],
             'currency_iso_code'=>$attr['currency_iso_code']
@@ -69,11 +69,11 @@ Route::post('/cart/add', function () {
     
     
     
-        $count=App\product::get()->where('cart_id',$cart[0]->id)->count();
-        $sum=App\product::get()->where('cart_id',$cart[0]->id)->sum('price');
+        $count=App\product::get()->where('cart_id',$cart->id)->count();
+        $sum=App\product::get()->where('cart_id',$cart->id)->sum('price');
     return [
         'status' => "success",
-        'products' => App\product::get()->where('cart_id',$cart[0]->id),
+        'products' => App\product::get()->where('cart_id',$cart->id),
         'count' =>  $count,
         'sum' => $sum
     ];

@@ -53,16 +53,7 @@
                             
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="currency_iso_code" class="col-md-4 col-form-label text-md-right">currency code</label>
-
-                            <div class="col-md-6">
-                                <input id="currency_iso_code" type="text" class="form-control" name="currency_iso_code" required>
-
-                            
-                            </div>
-                        </div>
+                                <input id="currency_iso_code" type="text" class="form-control" name="currency_iso_code" required hidden value="ILS">
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary btn-large" style="width: 50%;">
@@ -78,7 +69,7 @@
     </div>
 
 @endif 
-
+@if ($cart != NULL)
 <div class="row justify-content-center" style="margin:20px">
         <div class="col-md-8">
             <div class="card">
@@ -101,8 +92,9 @@
             </div>
         </div>
     </div>
+@endif
 
-
+@if ($products != NULL)
 @foreach ($products as $p)
 <div class="row justify-content-center" style="margin:20px">
         <div class="col-md-8">
@@ -131,5 +123,6 @@
         </div>
     </div>
 @endforeach
+@endif
 </div>
 @endsection

@@ -30,18 +30,25 @@ class HomeController extends Controller
 
         if($cart == Null){
             $cart =false;
+            return view('home')->with([
+                'cart' => $cart,
+                'products' => '',
+                'count' => '',
+                'total' => ''
+            ]);
         }else{
             $cart_id=$cart->id;
             $cart=true;
-        }
-        
-        $products=product::get()->where('cart_id',$cart_id);
+            $products=product::get()->where('cart_id',$cart_id);
         return view('home')->with([
             'cart' => $cart,
             'products' => $products,
             'count' => $products->count(),
             'total' => $products->sum('price')
         ]);
+        }
+        
+        
             
     }
 }

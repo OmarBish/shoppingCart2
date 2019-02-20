@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\App\cart;
+
+use App\product;
 
 class HomeController extends Controller
 {
@@ -25,13 +26,20 @@ class HomeController extends Controller
     public function index()
     {
         $cart=auth()->user()->cart()->first();
+        $cart_id=$cart->id;
+
         if($cart == Null){
             $cart =false;
         }else{
             $cart=true;
         }
+        
+        $products=product::get()->where('cart_id',$cart_id);
         return view('home')->with([
-            'cart' => $cart
+            'cart' => $cart,
+            'products' => $products,
+            'count' => $products->count(),
+            'total' => $products->sum('price')
         ]);
             
     }

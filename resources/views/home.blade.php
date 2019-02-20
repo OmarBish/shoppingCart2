@@ -78,5 +78,58 @@
     </div>
 
 @endif 
+
+<div class="row justify-content-center" style="margin:20px">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">general info</div>
+                <div class="card-body">
+                    <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <p> tottal : {{ $count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <p> price : {{ $total }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+@foreach ($products as $p)
+<div class="row justify-content-center" style="margin:20px">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Product id {{ $p->id }}</div>
+
+                <div class="card-body">
+                    <div class="form-group row mb-0">
+                        <div class="col-md-8 offset-md-4">
+                            <p> Name : {{ $p->id }} </p>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-md-8 offset-md-4">
+                            <p> Price : {{ $p->price }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row mb-0">
+                        <div class="col-md-8 offset-md-4">
+                            <p> Currency : {{ $p->currency_iso_code }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 </div>
 @endsection

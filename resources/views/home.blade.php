@@ -104,7 +104,7 @@
                 <div class="card-body">
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
-                            <p> Name : {{ $p->id }} </p>
+                            <p> Name : {{ $p->name}} </p>
                         </div>
                     </div>
                     <div class="form-group row mb-0">

@@ -58,7 +58,7 @@ Route::middleware('auth')->get('/cart', function () {
 Route::middleware('auth')->post('/cart/add', function () {
     $attr = request()->validate([
         'name' => 'required',
-        'price' => 'required',
+        'price' => 'required|integer',
         'currency_iso_code' => 'required',
     ]);
     

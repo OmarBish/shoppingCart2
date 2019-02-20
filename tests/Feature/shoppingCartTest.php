@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Validation\ValidationException;
 
 class shoppingCartTest extends TestCase
 {
@@ -32,6 +33,34 @@ class shoppingCartTest extends TestCase
             'currency_iso_code' => 'ILS',
         ])->assertRedirect('/login'); 
     }
+
+     /** @test */
+     public function price_must_be_an_integer()
+     {
+ 
+         
+         //login
+        $this->withOutExceptionHandling();
+        $user=factory('App\User')->create();
+        $this->actingAs($user);
+        $response=$this->post('/cart',[]);
+
+        try {
+            //add products
+            $response=$this->post('/cart/add',[
+                'name' => 'Java',
+                'price' => 's',
+                'currency_iso_code' => 'ILS',
+             ]);
+        } catch (ValidationException $exception) {
+            $response->assertSuccessful();
+        }
+
+
+
+            
+        
+     }
 
     /** @test */
     public function creat_shopping_cart()

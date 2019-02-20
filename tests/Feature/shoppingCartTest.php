@@ -21,6 +21,17 @@ class shoppingCartTest extends TestCase
        
     }
 
+    /** @test */
+    public function guset_may_not_add_a_product()
+    {
+
+        
+        $this->post('/cart/add',[
+            'name' => 'Java',
+            'price' => '100',
+            'currency_iso_code' => 'ILS',
+        ])->assertRedirect('/login'); 
+    }
 
     /** @test */
     public function creat_shopping_cart()
@@ -59,7 +70,7 @@ class shoppingCartTest extends TestCase
 
 
         //add products
-        $response=$this->post('/a/cart/add',[
+        $response=$this->post('/cart/add',[
                     'name' => 'Java',
                     'price' => '100',
                     'currency_iso_code' => 'ILS',
@@ -67,11 +78,10 @@ class shoppingCartTest extends TestCase
 
 
         
-        $response->assertJsonFragment([
-                'cart_id' => auth()->user()->cart()->first()->id,
-                'name' => 'Java',
-                'currency_iso_code' => "ILS",
-                'price' => 100
+        $response->assertViewHasAll([
+            'name' => 'Java',
+            'currency_iso_code' => "ILS",
+            'price' => 100
         ]);
     }
     /** @test */
@@ -91,40 +101,37 @@ class shoppingCartTest extends TestCase
 
 
         //add products
-        $response=$this->post('/a/cart/add',[
+        $response=$this->post('/cart/add',[
             'name' => 'Java',
             'price' => '100',
             'currency_iso_code' => 'ILS',
         ]);
-        $response->assertJsonFragment([
-            'cart_id' => auth()->user()->cart()->first()->id,
+        $response->assertViewHasAll([
             'name' => 'Java',
             'currency_iso_code' => "ILS",
             'price' => 100
-    ]);
-    //add products
-    $response=$this->post('/a/cart/add',[
-        'name' => 'Java',
-        'price' => '100',
-        'currency_iso_code' => 'ILS',
-    ]);
-    $response->assertJsonFragment([
-        'cart_id' => auth()->user()->cart()->first()->id,
-        'name' => 'Java',
-        'currency_iso_code' => "ILS",
-        'price' => 100
-    ]);
-    //add products
-    $response=$this->post('/a/cart/add',[
-        'name' => 'Java',
-        'price' => '100',
-        'currency_iso_code' => 'ILS',
-    ]);
-    $response->assertJsonFragment([
-        'cart_id' => auth()->user()->cart()->first()->id,
-        'name' => 'Java',
-        'currency_iso_code' => "ILS",
-        'price' => 100
-    ]);
-    }
+        ]);
+        //add products
+        $response=$this->post('/cart/add',[
+            'name' => 'Java',
+            'price' => '100',
+            'currency_iso_code' => 'ILS',
+        ]);
+        $response->assertViewHasAll([
+            'name' => 'Java',
+            'currency_iso_code' => "ILS",
+            'price' => 100
+        ]);
+        //add products
+        $response->assertViewHasAll([
+            'name' => 'Java',
+            'currency_iso_code' => "ILS",
+            'price' => 100
+        ]);
+        $response->assertViewHasAll([
+            'name' => 'Java',
+            'currency_iso_code' => "ILS",
+            'price' => 100
+        ]);
+        }
 }

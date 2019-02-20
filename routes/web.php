@@ -15,6 +15,35 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::middleware('auth')->post('/cart', function () {
+    $attr['user_id']=auth()->id();
+    $attr['total']=0;
+    $attr['product_count']=0;
+    $cart = App\cart::updateOrCreate($attr); 
+
+    $cart=auth()->user()->cart()->first();
+        
+
+    if($cart == Null){
+        $cart =false;
+        return view('home')->with([
+            'cart' => $cart,
+            'products' => '',
+            'count' => '',
+            'total' => ''
+        ]);
+    }else{
+        $cart_id=$cart->id;
+        $cart=true;
+        $products=App\product::get()->where('cart_id',$cart_id);
+    return view('home')->with([
+        'cart' => $cart,
+        'products' => $products,
+        'count' => $products->count(),
+        'total' => $products->sum('price')
+        ]);
+    }
+});
 
 Route::middleware('auth')->get('/cart', function () {
     // $attr['user_id']=auth()->id();
@@ -26,54 +55,58 @@ Route::middleware('auth')->get('/cart', function () {
     ]);
 });
 
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');
-
-
-
-Route::middleware('auth')->post('/a/cart', function () {
-    $attr['user_id']=auth()->id();
-    $attr['total']=request('total');
-    $attr['product_count']=request('product_count');
-    $cart = App\cart::updateOrCreate($attr); 
-
-    return [
-        'cart' => $cart
-    ];
-});
-
-Route::middleware('auth')->post('/a/cart/add', function () {
-       
+Route::middleware('auth')->post('/cart/add', function () {
     $attr = request()->validate([
         'name' => 'required',
         'price' => 'required',
         'currency_iso_code' => 'required',
     ]);
     
-    $cart=App\cart::get()->where('id',auth()->id())->first();
+    $cart=auth()->user()->cart()->first();
     
         
         $product=App\product::create([
-                    'cart_id'=>$cart->id,
-                    'name'=>$attr['name'],
-                    'price'=>$attr['price'],
-                    'currency_iso_code'=>$attr['currency_iso_code']
-                ]);
+            'cart_id'=>$cart->id,
+            'name'=>$attr['name'],
+            'price'=>$attr['price'],
+            'currency_iso_code'=>$attr['currency_iso_code']
+        ]);
     
     
     
         $count=App\product::get()->where('cart_id',$cart->id)->count();
         $sum=App\product::get()->where('cart_id',$cart->id)->sum('price');
-    return [
-        'status' => "success",
-        'products' => App\product::get()->where('cart_id',$cart->id),
-        'count' =>  $count,
-        'sum' => $sum,
-        "product_id" => $product->id
-    ];
-    
+
+
+
+        $cart=auth()->user()->cart()->first();
+        
+
+    if($cart == Null){
+        $cart =false;
+        return view('home')->with([
+            'cart' => $cart,
+            'products' => '',
+            'count' => '',
+            'total' => ''
+        ]);
+    }else{
+        $cart_id=$cart->id;
+        $cart=true;
+        $products=App\product::get()->where('cart_id',$cart_id);
+    return view('home')->with([
+        'cart' => $cart,
+        'products' => $products,
+        'count' => $products->count(),
+        'total' => $products->sum('price'),
+        'name' => $product->name,
+        'price' => $product->price,
+        'currency_iso_code' => $product->currency_iso_code
+        ]);
+    }
 
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
 
